@@ -4,6 +4,8 @@ on:
   create:
     branches:
       '*'
+  pull_request:
+      types: opened
 
 jobs:
   run-python:
@@ -14,6 +16,6 @@ jobs:
         uses: actions/checkout@v4  
 
       - name: Execute the script file
-        run: 
+        run: |
           chmod +x script.sh
           ./script.sh    
