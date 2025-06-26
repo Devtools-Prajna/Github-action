@@ -4,6 +4,9 @@ on:
   create:
     branches:
       '*'
+  push:
+    branches:
+      - main
 
 jobs:
   run-python:
