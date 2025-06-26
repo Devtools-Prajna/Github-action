@@ -39,8 +39,7 @@ jobs:
       
             - name: Install Dependencies
               run:
-                  sudo apt install python3 -y
-                  sudo apt install python3-pip -y
+                  sudo apt update && sudo apt install python3 python3-pip -y
       
             - name: Run the Python script
               run: python test_script.py
@@ -59,8 +58,7 @@ jobs:
       
             - name: Install Dependencies
               run:
-                  sudo apt install python3 -y
-                  sudo apt install python3-pip -y
+                 sudo apt update && sudo apt install python3 python3-pip -y
       
             - name: deploy application
               run: echo "deploying application"
