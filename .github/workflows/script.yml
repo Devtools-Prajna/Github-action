@@ -1,0 +1,17 @@
+name: Script
+
+on:
+  create:
+    branches:
+      '*'
+
+jobs:
+  run-python:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4  
+
+      - name: Execute the script file
+        run: ./script.sh    
