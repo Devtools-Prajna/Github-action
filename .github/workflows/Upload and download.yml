@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
-              uses: action/checkout@v3
+              uses: action/checkout@v4
 
             - name: Create the simple Python file
               run: |
@@ -25,7 +25,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
           - name: Checkout repository
-            uses: action/checkout@v3
+            uses: action/checkout@v4
 
           - name: Downloasd artifacts
             uses: action/download-artifact@v3
