@@ -39,7 +39,7 @@ jobs:
         timeout-minutes: 1
         run: |
          sudo apt update && sudo apt install python3 python3-pip -y
-         sleep 6000s 
+        # sleep 6000s 
 
       - name: Run the Python script
         run: python Program1.py
