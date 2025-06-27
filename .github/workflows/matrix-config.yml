@@ -5,18 +5,21 @@ on:
   workflow_dispatch:
 
 jobs:
-   build:
-      strategy:
-         matrix:
-            os: [ ubuntu-latest, ubuntu-22.04, windows-latest ]
-            images: [ hello-world, alpine ]
-      runs-on: ${{ matrix.os }}
-      steps:
-        - name: Docker details
-          run: docker info
+  build:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        os: [ubuntu-latest, ubuntu-22.04, windows-latest]
+        images: [hello-world, alpine]
+        exclude:
+          - os: windows-latest
+            images: alpine
 
-        - name: Run the docker image
-          run: docker run hello-world
-            
-         
-   
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Docker details
+        run: docker info
+
+      - name: Run the docker image
+        run: docker run ${{ matrix.images }}
