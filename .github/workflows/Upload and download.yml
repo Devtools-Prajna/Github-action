@@ -1,0 +1,41 @@
+name: Upload and Download file
+
+on:
+  push:
+    branches:
+        - main
+
+jobs:
+    Upload:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: action/checkout@v3
+
+            - name: Create the simple Python file
+              run: |
+                echo 'print("Hello world")' >> file.txt
+
+            - name: Upload artifacts
+              uses: action/upload-artifact@v3
+              with:
+                name: File.txt
+
+    Download:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout repository
+            uses: action/checkout@v3
+
+          - name: Downloasd artifacts
+            uses: action/download-artifact@v3
+            with:
+              name: File.txt
+
+          - name: Display the structure of Downloaded Files
+            run: ls -R
+          
+    
+              
+            
+    
