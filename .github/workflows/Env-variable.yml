@@ -1,0 +1,38 @@
+name: Environment Variable
+
+on:
+  push:
+
+env:
+  CONTAINER_REGISTRY: docker.io
+  DOCKER_USERNAME: prajnashetty529
+  DOCKER_PASSWORD: Prajna@1234
+  IMAGE_NAME: github-action-nginx
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Docker Build
+        run: echo docker build -t ${{ env.CONTAINER_REGISTRY }}/ ${{ env.DOCKER_USERNAME }}/ ${{ env.IMAGE_NAME }}:latest
+
+      - name: Docker login
+        env:
+          DOCKER_PASSWORD: ${{ env.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ env.DOCKER_USERNAME }}
+        run: echo docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD
+
+      - name: Docker push
+        run: echo docker push ${{ env.CONTAINER_REGISTRY }}/ ${{ env.DOCKER_USERNAME }}/ ${{ env.IMAGE_NAME }}:latest
+
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: deploy docker
+        run: echo docker run -d -p 8080:80 ${{ env.CONTAINER_REGISTRY }}/ ${{ env.DOCKER_USERNAME }}/ ${{ env.IMAGE_NAME }}:latest
