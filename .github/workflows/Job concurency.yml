@@ -27,7 +27,8 @@ jobs:
       needs: build
       concurrency:
         group: python-production
-        cancel-in-progress: false
+        cancel-in-progress: true
+        #  cancel-in-progress: false
       runs-on: ubuntu-latest
 
       steps:
