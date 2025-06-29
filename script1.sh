@@ -3,5 +3,5 @@ sudo apt update
 sudo apt -y install python3 
 sudo apt -y install python3-pip 
 python3 --version
-python3 Project.py
+echo -e "5\n+\n3" | python3 Project.py
 cat Project.py
