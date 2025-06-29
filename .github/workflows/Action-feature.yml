@@ -23,7 +23,12 @@ jobs:
       runs-on: ${{ matrix.os }}
       steps:
        - name: Checkout Repository
-         run: actions/checkout@v3
+         uses: actions/checkout@v3
+
+       - name: Set up Python ${{ matrix.version }}
+         uses: actions/setup-python@v5
+         with:
+          python-version: ${{ matrix.version }}
 
        - name: Execute  the script file
          run: |
@@ -36,7 +41,12 @@ jobs:
       runs-on: ubuntu-latest
       steps:
           - name: Checkout Repository
-            run: actions/checkout@v3
+            uses: actions/checkout@v3
+
+          - name: Set up Python 3.x
+            uses: actions/setup-python@v5
+            with:
+             python-version: 3.x
 
           - name: Install dependencies
             run: | 
@@ -48,14 +58,14 @@ jobs:
                 echo -e "5\n+\n3" | python3 Project.py > calculator_output.txt
        
           - name: Upload the file
-            uses: action/upload-artifact@v3
+            uses: action/upload-artifact@v4
             with:
               name: calculator-output
               path: calculator_output.txt
 
 
   deploy:
-      needs: build
+      needs: test
       if: always()
       runs-on: ubuntu-latest
       timeout-minutes: 1
@@ -71,7 +81,7 @@ jobs:
               name: calculator-output
 
           - name: View the downloaded file
-            run: cat calculator-output
+            run: cat calculator_output.txt
             
           - name: Sleep foe 6000 seconds
             run: sleep 6000s
