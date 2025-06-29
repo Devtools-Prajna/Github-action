@@ -20,7 +20,7 @@ jobs:
                 - os: windows-latest
                   version: 3.8
       
-      runs-on: ${{ matrx.os }}
+      runs-on: ${{ matrix.os }}
       steps:
        - name: Checkout Repository
          run: actions/checkout@v3
