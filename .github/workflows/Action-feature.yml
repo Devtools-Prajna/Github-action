@@ -15,20 +15,15 @@ jobs:
           max-parallel: 2
           matrix:
               os: [ubuntu-latest, ubuntu-22.04, windows-latest ]
-              version: [3.8, 3.9, 3.10]
+              images: [hello-world, alpine]
               exclude:
-                - os: windows-latest
-                  version: 3.8
+                 - os: windows-latest
+                   images: alpine
       
       runs-on: ${{ matrix.os }}
       steps:
        - name: Checkout Repository
          uses: actions/checkout@v3
-
-       - name: Set up Python ${{ matrix.version }}
-         uses: actions/setup-python@v5
-         with:
-          python-version: ${{ matrix.version }}
 
        - name: Execute  the script file
          run: |
@@ -42,12 +37,7 @@ jobs:
       steps:
           - name: Checkout Repository
             uses: actions/checkout@v3
-
-          - name: Set up Python 3.x
-            uses: actions/setup-python@v5
-            with:
-             python-version: 3.x
-
+            
           - name: Install dependencies
             run: | 
                 sudo apt update
