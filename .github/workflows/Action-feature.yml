@@ -25,7 +25,8 @@ jobs:
        - name: Checkout Repository
          uses: actions/checkout@v3
 
-       - name: Execute  the script file
+       - name: Execute the script file (Linux only)
+         if: runner.os != 'Windows'
          run: |
             chmod +x script1.sh
             ./script1.sh
