@@ -3,34 +3,37 @@ name: Action features in Project
 on:
   push:
     branches:
-          - main
+      - main
     paths-ignore:
-          README.md
-
+      - README.md
   workflow_dispatch:
 
 jobs:
   build:
-      strategy:
-      #   max-parallel: 2
-          matrix:
-              os: [ubuntu-latest, ubuntu-22.04, windows-latest ]
-              images: [hello-world, alpine]
-              exclude:
-                 - os: windows-latest
-                   images: alpine
-      
-      runs-on: ${{ matrix.os }}
-      steps:
-       - name: Checkout Repository
-         uses: actions/checkout@v3
+    strategy:
+      # max-parallel: 2
+      matrix:
+        os: [ubuntu-latest, ubuntu-22.04, windows-latest]
+        images: [hello-world, alpine]
+        exclude:
+          - os: windows-latest
+            images: alpine
 
-       - name: Execute the script file
-         run: |
-            chmod +x script1.sh
-            ./script1.sh
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
+      - name: Execute the script file (Linux/macOS only)
+        if: runner.os != 'Windows'
+        run: |
+          chmod +x script1.sh
+          ./script1.sh
 
+      - name: Execute the script file (Windows only)
+        if: runner.os == 'Windows'
+        run: |
+          bash script1.sh
   test:
       needs: build
       runs-on: ubuntu-latest
