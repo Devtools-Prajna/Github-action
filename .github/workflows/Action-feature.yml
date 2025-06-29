@@ -66,14 +66,14 @@ jobs:
         
       steps:
           - name: Download the file
-            uses: actions/download-artifact@v3
+            uses: actions/download-artifact@v4
             with:
               name: calculator-output
 
           - name: View the downloaded file
             run: cat calculator_output.txt
             
-          - name: Sleep foe 6000 seconds
+          - name: Sleep for 6000 seconds
             run: sleep 6000s
       
       
