@@ -1,0 +1,85 @@
+name: Action features in Project
+
+on:
+  push:
+    branches:
+          - main
+    paths-ignore:
+          README.md
+
+  workflow_dispatch:
+
+jobs:
+  build:
+      strategy:
+          max-parallel: 2
+          matrix:
+              os: [ubuntu-latest, ubuntu-22.04, windows-latest ]
+              version: [3.8, 3.9, 3.10]
+              exclude:
+                - os: windows-latest
+                  version: 3.8
+      
+      runs-on: ${{ matrx.os }}
+      steps:
+       - name: Checkout Repository
+         run: actions/checkout@v3
+
+       - name: Execute  the script file
+         run: |
+            chmod +x script1.sh
+            ./script1.sh
+
+
+  test:
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout Repository
+            run: actions/checkout@v3
+
+          - name: Install dependencies
+            run: | 
+                sudo apt update
+                sudo apt install -y python3
+
+          - name: "Running calculator file"
+            run: |
+                echo -e "5\n+\n3" | python3 Project.py > calculator_output.txt
+       
+          - name: Upload the file
+            uses: action/upload-artifact@v3
+            with:
+              name: calculator-output
+              path: calculator_output.txt
+
+
+  deploy:
+      needs: build
+      if: always()
+      runs-on: ubuntu-latest
+      timeout-minutes: 1
+      concurrency:
+        group: python-production
+        cancel-in-progress: true
+      # cancel-in-progress: false  
+        
+      steps:
+          - name: Download the file
+            uses: actions/download-artifact@v3
+            with:
+              name: calculator-output
+
+          - name: View the downloaded file
+            run: cat calculator-output
+            
+          - name: Sleep foe 6000 seconds
+            run: sleep 6000s
+      
+      
+      
+       
+  
+      
+          
+          
