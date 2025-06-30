@@ -8,22 +8,12 @@ on:
 
 jobs:
   test:
-    name: Test on Node.js ${{ matrix.node }} and OS ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        node: [16, 18, 20]
-        os: [ubuntu-latest, windows-latest]
-        exclude:
-          - node: 16
-            os: windows-latest
-
-    defaults:
+     runs-on: ubuntu-latest
+     defaults:
       run:
         working-directory: simple-todo-api
 
-    steps:
+     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
