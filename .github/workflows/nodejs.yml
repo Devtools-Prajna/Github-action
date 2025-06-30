@@ -39,9 +39,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: simple-todo-api
 
       - name: Run Unit Tests with Coverage
         run: npm test -- --coverage
+        working-directory: simple-todo-api
         continue-on-error: false
 
       - name: Upload Test Results
