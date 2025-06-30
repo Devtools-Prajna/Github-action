@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Unit Converter</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <h1>Simple Unit Converter</h1>
+  <form action="/convert" method="POST">
+    <input type="text" name="value" placeholder="Enter value" required />
+    <select name="unit">
+      <option value="meters">Meters to Feet</option>
+      <option value="feet">Feet to Meters</option>
+    </select>
+    <button type="submit">Convert</button>
+  </form>
+
+  <% if (result) { %>
+    <p class="result"><%= result %></p>
+  <% } %>
+
+  <% if (error) { %>
+    <p class="error"><%= error %></p>
+  <% } %>
+</body>
+</html>
