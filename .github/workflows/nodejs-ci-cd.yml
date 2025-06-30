@@ -34,23 +34,20 @@ jobs:
 
 
   build-push:
-    name: Build Docker image and Push to Docker Hub
     runs-on: ubuntu-latest
     needs: build-test
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Docker login
+      - uses: actions/checkout@v3
+  
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-           username: ${{ vars.DOCKER_USERNAME }}
-           password: ${{ secrets.DOCKER_PASSWORD }}
-
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+  
       - name: Build Docker image
-        run: docker build -t yourdockerhubusername/simple-node-app:latest ./simple-node-app
-
-      - name: Push the image
-        run: |
-          docker push ${{ vars.DOCKER_USERNAME }}/simple-node-app:latest
+        run: docker build -t prajnashetty529/simple-node-app:latest .
+  
+      - name: Push Docker image
+        run: docker push prajnashetty529/simple-node-app:latest
 
