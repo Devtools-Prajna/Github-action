@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Unit Converter</title>
+</head>
+<body>
+  <h1>Unit Converter</h1>
+  <form id="convertForm">
+    <input type="number" id="value" placeholder="Value" required />
+    <select id="from">
+      <option value="m">Meters</option>
+      <option value="km">Kilometers</option>
+      <option value="cm">Centimeters</option>
+      <option value="mm">Millimeters</option>
+    </select>
+    to
+    <select id="to">
+      <option value="km">Kilometers</option>
+      <option value="m">Meters</option>
+      <option value="cm">Centimeters</option>
+      <option value="mm">Millimeters</option>
+    </select>
+    <button type="submit">Convert</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('convertForm').onsubmit = async function(e) {
+      e.preventDefault();
+      const value = document.getElementById('value').value;
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+
+      const res = await fetch(`/convert?value=${value}&from=${from}&to=${to}`);
+      const data = await res.json();
+
+      if (data.error) {
+        document.getElementById('result').innerText = 'Error: ' + data.error;
+      } else {
+        document.getElementById('result').innerText = 'Result: ' + data.result;
+      }
+    }
+  </script>
+</body>
+</html>
