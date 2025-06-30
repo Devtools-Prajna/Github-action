@@ -26,9 +26,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./simple-node-app
 
       - name: Run tests
         run: npm test
+        working-directory: ./simple-node-app
+
 
   build-push:
     name: Build Docker image and Push to Docker Hub
@@ -45,8 +48,8 @@ jobs:
            password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: |
-          docker build -t ${{ vars.DOCKER_USERNAME }}/simple-node-app:latest .
+        run: docker build -t yourdockerhubusername/simple-node-app:latest ./simple-node-app
+
       - name: Push the image
         run: |
           docker push ${{ vars.DOCKER_USERNAME }}/simple-node-app:latest
