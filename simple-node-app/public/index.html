@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Node.js App</title>
+</head>
+<body>
+  <h1>Welcome to Simple Node.js App</h1>
+  <button id="fetchBtn">Fetch Message</button>
+  <p id="message"></p>
+
+  <script>
+    document.getElementById('fetchBtn').onclick = async () => {
+      const res = await fetch('/api/hello');
+      const data = await res.json();
+      document.getElementById('message').innerText = data.message;
+    }
+  </script>
+</body>
+</html>
