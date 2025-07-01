@@ -1,10 +1,7 @@
-name: CI/CD Pipeline
-
+name: deploy
 on:
   push:
-    branches:
-      - main
-
+    branches: ["main"]
 jobs:
   build-test:
     runs-on: ubuntu-latest
@@ -18,11 +15,10 @@ jobs:
           node-version: 18
 
       - name: Cache node_modules
-        id: cache-node-modules
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('simple-node-app/package-lock.json') }}
 
       - name: Install dependencies
         run: npm install
@@ -45,7 +41,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
   
       - name: Build Docker image
-        run: docker build -t prajnashetty529/simple-node-app:latest .
+        run: docker build -t prajnashetty529/simple-node-app:latest -f simple-node-app/Dockerfile ./simple-node-app
   
       - name: Push Docker image
         run: docker push prajnashetty529/simple-node-app:latest
