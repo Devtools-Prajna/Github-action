@@ -45,8 +45,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
   
       - name: Build Docker image
-        run: docker build -t prajnashetty529/simple-node-app:latest -f Github-action/simple-node-app/Dockerfile 
-  
+        run: docker build -t prajnashetty529/simple-node-app:latest -f Github-action/simple-node-app/dockerfile 
       - name: Push Docker image
         run: docker push prajnashetty529/simple-node-app:latest
 
