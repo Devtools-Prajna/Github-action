@@ -1,84 +1,38 @@
-name: Action features in Project
+name: Deploy Python Azure Function
 
 on:
   push:
     branches:
-          - main
-    paths-ignore:
-          README.md
+      - main
 
-  workflow_dispatch:
+env:
+  AZURE_FUNCTIONAPP_NAME: 'python-10'  # Replace with actual function app name
+  PYTHON_VERSION: '3.10'
 
 jobs:
-  build:
-      strategy:
-      #   max-parallel: 2
-          matrix:
-              os: [ubuntu-latest, ubuntu-22.04, windows-latest ]
-              images: [hello-world, alpine]
-              exclude:
-                 - os: windows-latest
-                   images: alpine
-      
-      runs-on: ${{ matrix.os }}
-      steps:
-       - name: Checkout Repository
-         uses: actions/checkout@v3
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-       - name: Execute the script file
-         run: |
-            chmod +x script1.sh
-            ./script1.sh
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-  test:
-      needs: build
-      runs-on: ubuntu-latest
-      steps:
-          - name: Checkout Repository
-            uses: actions/checkout@v3
-            
-          - name: Install dependencies
-            run: | 
-                sudo apt update
-                sudo apt install -y python3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
-          - name: "Running calculator file"
-            run: |
-                echo -e "1\n5\n3" | python3 Project.py > calculator_output.txt
-       
-          - name: Upload the file
-            uses: actions/upload-artifact@v4
-            with:
-              name: calculator-output
-              path: calculator_output.txt
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt -t .
 
+      - name: Zip the function app
+        run: |
+          zip -r function.zip .
 
-  deploy:
-      needs: test
-      if: always()
-      runs-on: ubuntu-latest
-      timeout-minutes: 1
-      concurrency:
-        group: python-production
-        cancel-in-progress: true
-      # cancel-in-progress: false  
-        
-      steps:
-          - name: Download the file
-            uses: actions/download-artifact@v4
-            with:
-              name: calculator-output
-
-          - name: View the downloaded file
-            run: cat calculator_output.txt
-            
-          - name: Sleep for 6000 seconds
-            run: sleep 6000s
-      
-      
-      
-       
-  
-      
-          
-          
+      - name: Deploy to Azure Function App
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          package: 'function.zip'
+          publish-profile: ${{ secrets.AZURE_FUNCTION_PUBLISH_PROFILE }}
